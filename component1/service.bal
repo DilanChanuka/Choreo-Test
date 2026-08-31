@@ -9,7 +9,14 @@ configurable string component2Url = "https://e53fea87-942f-493a-9fa3-21d2bb1b443
 // Sent as the raw "Test-Key" header value (no Bearer prefix).
 configurable string component2AccessToken = "";
 
-final http:Client component2Client = check new (component2Url);
+// Strip any trailing slash so appending the root resource path doesn't
+// produce a double slash (e.g. "http://host:port/" + "/" -> "http://host:port//",
+// which the backend router 404s on).
+final string component2BaseUrl = component2Url.endsWith("/")
+    ? component2Url.substring(0, component2Url.length() - 1)
+    : component2Url;
+
+final http:Client component2Client = check new (component2BaseUrl);
 
 service / on new http:Listener(9090) {
 
