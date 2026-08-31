@@ -19,6 +19,6 @@ service / on new http:Listener(9090) {
         string response = check component2Client->/.get();
         log:printInfo("component 1 received response from component 2", response = response);
 
-        return "component 1";
+        return string `component 1, component2 response: ${response}`;
     }
 }
