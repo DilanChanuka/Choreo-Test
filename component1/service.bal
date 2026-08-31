@@ -5,7 +5,7 @@ import ballerina/log;
 // When deployed to Choreo, override via Config.toml / environment config
 // with component2's internal project-scoped URL, e.g.
 // http://component2-<hash>:9090
-configurable string component2Url = "http://localhost:9091";
+configurable string component2Url = "https://e53fea87-942f-493a-9fa3-21d2bb1b4436-dev.e1-us-east-azure.choreoapis.dev/testproject02/component2/v1.0";
 
 final http:Client component2Client = check new (component2Url);
 
