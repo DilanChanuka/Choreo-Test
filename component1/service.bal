@@ -12,13 +12,19 @@ final http:Client component2Client = check new (component2Url);
 service / on new http:Listener(9090) {
 
     // Calls component2 before responding, mirroring Updates Manager -> Updates Creator.
-    resource function get .() returns string|error {
+    resource function get .() returns string {
         log:printInfo("component 1");
 
         log:printInfo("component 1 calling component 2", targetUrl = component2Url);
-        string response = check component2Client->/.get();
-        log:printInfo("component 1 received response from component 2", response = response);
+        string|http:ClientError result = component2Client->/.get();
 
-        return string `component 1, component2 response: ${response}`;
+        if result is http:ClientError {
+            log:printError("component 1 failed to receive response from component 2",
+                    result, targetUrl = component2Url);
+            return string `component 1, component2 call failed: ${result.message()}`;
+        }
+
+        log:printInfo("component 1 received response from component 2", response = result);
+        return string `component 1, component2 response: ${result}`;
     }
 }
