@@ -1,7 +1,7 @@
 import ballerina/http;
 import ballerina/log;
 
-configurable int listenPort = 9091;
+configurable int listenPort = 9092;
 
 service / on new http:Listener(listenPort) {
 
